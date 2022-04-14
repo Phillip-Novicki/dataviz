@@ -69,8 +69,44 @@ def visualize_days():
     #close plot file
     plt.clf()
 
-def main():
-    visualize_days()
+def visualize_type():
+    """Visualize data by category in a bar graph"""
+
+    #grab our parsed data
+    data_file = parse(MY_FILE, ",")
+    
+    #Same as before, this returns a dict where it sums the total
+    # incidents per Category
+    counter = Counter(item["Category"] for item in data_file)
+
+    #Set the labels which are based on the keys of our counter.
+    #Since order doesn't matter, we can just used counter.keys()
+    labels = tuple(counter.keys())
+
+    xlocations = np.arange(len(labels)) + 0.5
+
+    #width of each bar
+    width = 0.5
+
+    #Assign data to a bar plot
+    plt.bar(xlocations, counter.values(), width=width)
+    # Assign labels and tick location to x-axis
+    plt.xticks(xlocations + width / 2, labels, rotation=90)
+
+    #Give some more room so the labels aren't cut off in the graph
+    plt.subplots_adjust(bottom=0.4)
+    
+    #Make the overal graph/figure larger
+    plt.rcParams['figure.figsize'] = 12, 8
+
+    #Save the clocktower, err.. plot!
+    plt.savefig("Type.png")
+
+    #Close figure
+    plt.clf()
+
+def main(): 
+    visualize_type()
 
 if __name__ == "__main__":
     main()
